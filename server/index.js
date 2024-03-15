@@ -15,11 +15,10 @@ app.use(cors());
 const filePath = path.join(__dirname, '../data/pokedex.json');
 const pokemonData = JSON.parse(fs.readFileSync(filePath));
 
-// GraphQL schema
+// Updated GraphQL schema
 const schema = buildSchema(`
   type Query {
-    pokemonByName(name: String!): Pokemon
-    pokemonByType(type: String!): [Pokemon]
+    pokemonById(id: Int!): Pokemon
   }
   type Pokemon {
     id: Int
@@ -43,12 +42,22 @@ const schema = buildSchema(`
   }
 `);
 
-// Resolver root
+// Updated resolver root
 const root = {
-  pokemonByName: ({ name }) =>
-    pokemonData.find((p) => p.name.english.toLowerCase() === name.toLowerCase()),
-  pokemonByType: ({ type }) =>
-    pokemonData.filter((p) => p.type.includes(type)),
+  pokemonById: ({ id }) => {
+    const pokemon = pokemonData.find(p => p.id === id);
+    return {
+      ...pokemon,
+      base: {
+        HP: pokemon.base.HP,
+        Attack: pokemon.base.Attack,
+        Defense: pokemon.base.Defense,
+        SpAttack: pokemon.base["Sp. Attack"],
+        SpDefense: pokemon.base["Sp. Defense"],
+        Speed: pokemon.base.Speed,
+      }
+    };
+  }
 };
 
 // Returns array of all Pokemon and their data

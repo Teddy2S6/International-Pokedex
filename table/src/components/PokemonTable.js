@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 const PokemonTable = () => {
     // Defining states to manage the list of Pokemons, searching, and filtering
@@ -17,7 +18,6 @@ const PokemonTable = () => {
                 console.error("Error fetching data: ", error);
             }
         };
-
         fetchData();
     }, []);
 
@@ -68,7 +68,9 @@ const PokemonTable = () => {
                                 <img src={`./assets/sprites/${String(pokemon.id).padStart(3, '0')}MS.png`} alt={pokemon.name.english} />
                                 {pokemon.id}
                             </td>
-                            <td>{pokemon.name.english}</td>
+                            <td>
+                                <Link to={`/pokemon/${pokemon.id}`}>{pokemon.name.english}</Link>
+                            </td>
                             <td>{pokemon.type.join(', ')}</td>
                             <td>{Object.values(pokemon.base).reduce((a, b) => a + b, 0)}</td>
                             {Object.values(pokemon.base).map((value, idx) => (
