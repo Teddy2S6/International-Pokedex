@@ -3,9 +3,13 @@ const { graphqlHTTP } = require('express-graphql');
 const { buildSchema } = require('graphql');
 const fs = require('fs');
 const path = require('path');
+const cors = require('cors');
 
 const app = express();
 const PORT = 3000;
+
+// Enable CORS for all routes
+app.use(cors());
 
 // Load Pokemon data
 const filePath = path.join(__dirname, '../data/pokedex.json');
@@ -46,9 +50,6 @@ const root = {
   pokemonByType: ({ type }) =>
     pokemonData.filter((p) => p.type.includes(type)),
 };
-
-const cors = require('cors');
-app.use(cors());
 
 // Returns array of all Pokemon and their data
 app.get('/api/pokemon', (req, res) => {
