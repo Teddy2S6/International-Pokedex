@@ -2,10 +2,17 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
+// SortArrows component
+const SortArrows = () => (
+    <img src="/assets/arrows/sortingArrows.png" alt="Sort" style={{ width: '16px', height: '16px' }} />
+);
+
 const PokemonTable = () => {
-    // Defining states to manage the list of Pokemons, searching, and filtering
+    // Defining states to manage the list of Pokemons, searching, sorting, and filtering
     const [pokemons, setPokemons] = useState([]);
     const [search, setSearch] = useState('');
+    const [sortKey, setSortKey] = useState('id');
+    const [sortDirection, setSortDirection] = useState('asc');
     const [filter, setFilter] = useState('');
 
     // Fetching data from the server
@@ -31,11 +38,42 @@ const PokemonTable = () => {
         setFilter(event.target.value);
     };
 
-    // Filtering the Pokemon list based on the search and filter values
-    const filteredPokemons = pokemons.filter(pokemon =>
-        pokemon.name.english.toLowerCase().includes(search) &&
-        (filter ? pokemon.type.includes(filter) : true)
-    );
+    // Event handlers for sorting
+    const handleSortChange = (key) => {
+        if (sortKey === key) {
+            setSortDirection(prevDirection => prevDirection === 'asc' ? 'desc' : 'asc');
+        } else {
+            setSortKey(key);
+            setSortDirection('asc');
+        }
+    };
+
+    // Calculate total base stats
+    const calculateTotal = (base) => {
+        return Object.values(base).reduce((acc, cur) => acc + cur, 0);
+    };
+
+    // Get the sortable value for each Pokemon
+    const getSortableValue = (pokemon, key) => {
+        if (key === 'total') return calculateTotal(pokemon.base);
+        if (key === 'name') return pokemon.name.english.toLowerCase();
+        if (key === 'SpAttack' || key === 'SpDefense') {
+            return pokemon.base[key];
+        }
+        return pokemon.base[key] || pokemon.id;
+    };
+
+    // Sorting and filtering the list of Pokemons
+    const sortedAndFilteredPokemons = pokemons
+        .filter(pokemon => pokemon.name.english.toLowerCase().includes(search) && (!filter || pokemon.type.includes(filter)))
+        .sort((a, b) => {
+            const valueA = getSortableValue(a, sortKey);
+            const valueB = getSortableValue(b, sortKey);
+
+            if (valueA < valueB) return sortDirection === 'asc' ? -1 : 1;
+            if (valueA > valueB) return sortDirection === 'asc' ? 1 : -1;
+            return 0;
+        });
 
     return (
         <div>
@@ -49,20 +87,20 @@ const PokemonTable = () => {
             <table>
                 <thead>
                     <tr>
-                        <th>#</th>
-                        <th>Name</th>
+                        <th onClick={() => handleSortChange('id')}># <SortArrows /></th>
+                        <th onClick={() => handleSortChange('name')}>Name <SortArrows /></th>
                         <th>Type</th>
-                        <th>Total</th>
-                        <th>HP</th>
-                        <th>Attack</th>
-                        <th>Defense</th>
-                        <th>Sp. Attack</th>
-                        <th>Sp. Defense</th>
-                        <th>Speed</th>
+                        <th onClick={() => handleSortChange('total')}>Total <SortArrows /></th>
+                        <th onClick={() => handleSortChange('HP')}>HP <SortArrows /></th>
+                        <th onClick={() => handleSortChange('Attack')}>Attack <SortArrows /></th>
+                        <th onClick={() => handleSortChange('Defense')}>Defense <SortArrows /></th>
+                        <th onClick={() => handleSortChange('Sp. Attack')}>Sp. Atk <SortArrows /></th>
+                        <th onClick={() => handleSortChange('Sp. Defense')}>Sp. Def <SortArrows /></th>
+                        <th onClick={() => handleSortChange('Speed')}>Speed <SortArrows /></th>
                     </tr>
                 </thead>
                 <tbody>
-                    {filteredPokemons.map((pokemon, index) => (
+                    {sortedAndFilteredPokemons.map((pokemon, index) => (
                         <tr key={index}>
                             <td>
                                 <img src={`./assets/sprites/${String(pokemon.id).padStart(3, '0')}MS.png`} alt={pokemon.name.english} />
@@ -72,10 +110,13 @@ const PokemonTable = () => {
                                 <Link to={`/pokemon/${pokemon.id}`}>{pokemon.name.english}</Link>
                             </td>
                             <td>{pokemon.type.join(', ')}</td>
-                            <td>{Object.values(pokemon.base).reduce((a, b) => a + b, 0)}</td>
-                            {Object.values(pokemon.base).map((value, idx) => (
-                                <td key={idx}>{value}</td>
-                            ))}
+                            <td>{calculateTotal(pokemon.base)}</td>
+                            <td>{pokemon.base.HP}</td>
+                            <td>{pokemon.base.Attack}</td>
+                            <td>{pokemon.base.Defense}</td>
+                            <td>{pokemon.base["Sp. Attack"]}</td>
+                            <td>{pokemon.base["Sp. Defense"]}</td>
+                            <td>{pokemon.base.Speed}</td>
                         </tr>
                     ))}
                 </tbody>
