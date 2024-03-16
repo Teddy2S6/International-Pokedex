@@ -8,12 +8,12 @@ const SortArrows = () => (
 );
 
 const PokemonTable = () => {
-    // Defining states to manage the list of Pokemons, searching, sorting, and filtering
+    //  // Defining states to manage the list of Pokemon, searching, sorting, and filtering
     const [pokemons, setPokemons] = useState([]);
-    const [search, setSearch] = useState('');
-    const [sortKey, setSortKey] = useState('id');
-    const [sortDirection, setSortDirection] = useState('asc');
-    const [filter, setFilter] = useState('');
+    const [search, setSearch] = useState(sessionStorage.getItem('search') || '');
+    const [sortKey, setSortKey] = useState(sessionStorage.getItem('sortKey') || 'id');
+    const [sortDirection, setSortDirection] = useState(sessionStorage.getItem('sortDirection') || 'asc');
+    const [filter, setFilter] = useState(sessionStorage.getItem('filter') || '');
 
     // Fetching data from the server
     useEffect(() => {
@@ -27,6 +27,14 @@ const PokemonTable = () => {
         };
         fetchData();
     }, []);
+
+    // Save to sessionStorage whenever search, filter, or sort state changes
+    useEffect(() => {
+        sessionStorage.setItem('search', search);
+        sessionStorage.setItem('sortKey', sortKey);
+        sessionStorage.setItem('sortDirection', sortDirection);
+        sessionStorage.setItem('filter', filter);
+    }, [search, sortKey, sortDirection, filter]);
 
     // Event handlers for searching
     const handleSearchChange = (event) => {
@@ -77,8 +85,14 @@ const PokemonTable = () => {
 
     return (
         <div>
-            <input type="text" placeholder="Search Pokemon" onChange={handleSearchChange} />
-            <select onChange={handleFilterChange}>
+            <input
+                type="text"
+                placeholder="Search Pokemon"
+                value={search}
+                onChange={handleSearchChange} />
+            <select
+                value={filter}
+                onChange={handleFilterChange}>
                 <option value="">- All -</option>
                 {["Normal", "Fire", "Water", "Electric", "Grass", "Ice", "Fighting", "Poison", "Ground", "Flying", "Psychic", "Bug", "Rock", "Ghost", "Dragon", "Dark", "Steel", "Fairy"].map(type => (
                     <option key={type} value={type}>{type}</option>
