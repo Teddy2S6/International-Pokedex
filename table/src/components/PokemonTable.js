@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import './PokemonTable.css';
 
-// SortArrows component
+// Define a component to display the sorting arrows
 const SortArrows = () => (
-    <img src="/assets/arrows/sortingArrows.png" alt="Sort" style={{ width: '16px', height: '16px' }} />
+    <img src="/assets/arrows/sortingArrows.png" alt="Sort" className="sort-arrow" style={{ width: '16px', height: '16px' }} />
 );
 
 const PokemonTable = () => {
@@ -83,34 +84,66 @@ const PokemonTable = () => {
             return 0;
         });
 
+    // Function to determine if the column is the sorted column
+    const isSorted = (key) => sortKey === key;
+
     return (
-        <div>
-            <input
-                type="text"
-                placeholder="Search Pokemon"
-                value={search}
-                onChange={handleSearchChange} />
-            <select
-                value={filter}
-                onChange={handleFilterChange}>
-                <option value="">- All -</option>
-                {["Normal", "Fire", "Water", "Electric", "Grass", "Ice", "Fighting", "Poison", "Ground", "Flying", "Psychic", "Bug", "Rock", "Ghost", "Dragon", "Dark", "Steel", "Fairy"].map(type => (
-                    <option key={type} value={type}>{type}</option>
-                ))}
-            </select>
+        <div className="table-container">
+            <h1 className="title">
+                National Pokémon Pokedex
+            </h1>
+            <div className="search-filter-container">
+                <span className="search-label">Name:</span>
+                <input
+                    id="searchInput"
+                    type="text"
+                    placeholder="Search Pokemon"
+                    value={search}
+                    onChange={handleSearchChange}
+                    className="search-input" />
+                <label htmlFor="typeSelect" className="filter-label">Type:</label>
+                <select
+                    id="typeSelect"
+                    value={filter}
+                    onChange={handleFilterChange}
+                    className="filter-select">
+                    <option value="">- All -</option>
+                    {["Normal", "Fire", "Water", "Electric", "Grass", "Ice", "Fighting", "Poison", "Ground", "Flying", "Psychic", "Bug", "Rock", "Ghost", "Dragon", "Dark", "Steel", "Fairy"].map(type => (
+                        <option key={type} value={type}>{type}</option>
+                    ))}
+                </select>
+            </div>
             <table>
                 <thead>
                     <tr>
-                        <th onClick={() => handleSortChange('id')}># <SortArrows /></th>
-                        <th onClick={() => handleSortChange('name')}>Name <SortArrows /></th>
+                        <th onClick={() => handleSortChange('id')} className={isSorted('id') ? 'sorted-header' : ''}>
+                            # <SortArrows className="sort-arrow" />
+                        </th>
+                        <th onClick={() => handleSortChange('name')} className={isSorted('name') ? 'sorted-header' : ''}>
+                            Name <SortArrows className="sort-arrow" />
+                        </th>
                         <th>Type</th>
-                        <th onClick={() => handleSortChange('total')}>Total <SortArrows /></th>
-                        <th onClick={() => handleSortChange('HP')}>HP <SortArrows /></th>
-                        <th onClick={() => handleSortChange('Attack')}>Attack <SortArrows /></th>
-                        <th onClick={() => handleSortChange('Defense')}>Defense <SortArrows /></th>
-                        <th onClick={() => handleSortChange('Sp. Attack')}>Sp. Atk <SortArrows /></th>
-                        <th onClick={() => handleSortChange('Sp. Defense')}>Sp. Def <SortArrows /></th>
-                        <th onClick={() => handleSortChange('Speed')}>Speed <SortArrows /></th>
+                        <th onClick={() => handleSortChange('total')} className={isSorted('total') ? 'sorted-header' : ''}>
+                            Total <SortArrows className="sort-arrow" />
+                        </th>
+                        <th onClick={() => handleSortChange('HP')} className={isSorted('HP') ? 'sorted-header' : ''}>
+                            HP <SortArrows className="sort-arrow" />
+                        </th>
+                        <th onClick={() => handleSortChange('Attack')} className={isSorted('Attack') ? 'sorted-header' : ''}>
+                            Attack <SortArrows className="sort-arrow" />
+                        </th>
+                        <th onClick={() => handleSortChange('Defense')} className={isSorted('Defense') ? 'sorted-header' : ''}>
+                            Defense <SortArrows className="sort-arrow" />
+                        </th>
+                        <th onClick={() => handleSortChange('Sp. Attack')} className={isSorted('Sp. Attack') ? 'sorted-header' : ''}>
+                            Sp. Atk <SortArrows className="sort-arrow" />
+                        </th>
+                        <th onClick={() => handleSortChange('Sp. Defense')} className={isSorted('Sp. Defense') ? 'sorted-header' : ''}>
+                            Sp. Def <SortArrows className="sort-arrow" />
+                        </th>
+                        <th onClick={() => handleSortChange('Speed')} className={isSorted('Speed') ? 'sorted-header' : ''}>
+                            Speed <SortArrows className="sort-arrow" />
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -123,8 +156,14 @@ const PokemonTable = () => {
                             <td>
                                 <Link to={`/pokemon/${pokemon.id}`}>{pokemon.name.english}</Link>
                             </td>
-                            <td>{pokemon.type.join(', ')}</td>
-                            <td>{calculateTotal(pokemon.base)}</td>
+                            <td>
+                                {pokemon.type.map((type, index) => (
+                                    <span key={index} className={`type ${type.toLowerCase()}`}>
+                                        {type}
+                                    </span>
+                                ))}
+                            </td>
+                            <td className="total-value">{calculateTotal(pokemon.base)}</td>
                             <td>{pokemon.base.HP}</td>
                             <td>{pokemon.base.Attack}</td>
                             <td>{pokemon.base.Defense}</td>
