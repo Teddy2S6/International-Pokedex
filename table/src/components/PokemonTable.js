@@ -90,7 +90,7 @@ const PokemonTable = () => {
     return (
         <div className="table-container">
             <h1 className="title">
-                National Pokémon Pokedex
+                International Pokémon Pokedex
             </h1>
             <div className="search-filter-container">
                 <span className="search-label">Name:</span>
