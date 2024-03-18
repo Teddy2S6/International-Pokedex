@@ -15,6 +15,24 @@ body {
     max-height: 500vh;
     margin: auto;
     font-family: 'Fira Sans', sans-serif;
+    position: relative;
+    padding: 20px;
+    min-height: 100vh;
+}
+
+.table-container::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 70%; /* Example width adjustment */
+    max-width: 80%; /* Adjust as needed */
+    height: 100vh;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    z-index: -1;
+    border-radius: 8px;
 }
 
 thead th {

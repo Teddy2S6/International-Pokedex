@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import './PokemonDetail.css';
 
 function PokemonDetail() {
     // Defining states to manage the Pokemon details
@@ -76,19 +77,42 @@ function PokemonDetail() {
     if (!pokemon) return <div>Loading...</div>;
 
     return (
-        <div>
-            <button onClick={goToPokemonTable}>Back to Pokemon List</button><br />
-            <button onClick={goToPreviousPokemon}>Previous Pokemon</button>
-            <button onClick={goToNextPokemon}>Next Pokemon</button>
-            <h2>{pokemon.name.english}</h2>
-            <img src={`/assets/images/${String(pokemon.id).padStart(3, '0')}.png`} alt={pokemon.name.english} />
-            <p>Type: {pokemon.type.join(', ')}</p>
-            <p>HP: {pokemon.base.HP}</p>
-            <p>Attack: {pokemon.base.Attack}</p>
-            <p>Defense: {pokemon.base.Defense}</p>
-            <p>Sp. Attack: {pokemon.base.SpAttack}</p>
-            <p>Sp. Defense: {pokemon.base.SpDefense}</p>
-            <p>Speed: {pokemon.base.Speed}</p>
+        <div className="pokemon-card">
+            <div className="title-row">
+                <button className="nav-button" onClick={goToPreviousPokemon}>Previous Pokemon</button>
+                <h2 className="pokemon-name">{pokemon.name.english}</h2>
+                <button className="nav-button" onClick={goToNextPokemon}>Next Pokemon</button>
+            </div>
+            <div className="center">
+                <div className="center-left">
+                    <img className="pokemon-image" src={`/assets/images/${String(pokemon.id).padStart(3, '0')}.png`} alt={pokemon.name.english} />
+                </div>
+                <div className="center-right">
+                    <img className="pokemon-sprite" src={`/assets/sprites/${String(pokemon.id).padStart(3, '0')}MS.png`} alt={pokemon.name.english} />
+                    <p className="pokemon-number">No. {pokemon.id}</p>
+                    <div className="pokemon-types">
+                        {pokemon.type.map((type, index) => (
+                            <span key={index} className={`type ${type.toLowerCase()}`}>
+                                {type}
+                            </span>
+                        ))}
+                    </div>
+                </div>
+            </div>
+            <div className="center-bottom">
+                <h3 className="stats-title">Base Stats</h3>
+                <div className="stats-container">
+                    <p>HP: {pokemon.base.HP}</p>
+                    <p>Attack: {pokemon.base.Attack}</p>
+                    <p>Defense: {pokemon.base.Defense}</p>
+                    <p>Sp. Attack: {pokemon.base.SpAttack}</p>
+                    <p>Sp. Defense: {pokemon.base.SpDefense}</p>
+                    <p>Speed: {pokemon.base.Speed}</p>
+                </div>
+            </div>
+            <div className="bottom-row">
+                <button className="back-button" onClick={goToPokemonTable}>Back to Pokemon List</button>
+            </div>
         </div>
     );
 }
