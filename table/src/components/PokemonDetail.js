@@ -18,6 +18,9 @@ function PokemonDetail() {
                         id
                         name {
                             english
+                            japanese
+                            chinese
+                            french
                         }
                         type
                         base {
@@ -74,7 +77,7 @@ function PokemonDetail() {
     };
 
     // Display loading message while fetching data
-    if (!pokemon) return <div>Loading...</div>;
+    if (!pokemon) return <div className="loading">Loading...</div>;
 
     return (
         <div className="pokemon-card">
@@ -88,7 +91,6 @@ function PokemonDetail() {
                     <img className="pokemon-image" src={`/assets/images/${String(pokemon.id).padStart(3, '0')}.png`} alt={pokemon.name.english} />
                 </div>
                 <div className="center-right">
-                    <img className="pokemon-sprite" src={`/assets/sprites/${String(pokemon.id).padStart(3, '0')}MS.png`} alt={pokemon.name.english} />
                     <p className="pokemon-number">No. {pokemon.id}</p>
                     <div className="pokemon-types">
                         {pokemon.type.map((type, index) => (
@@ -100,14 +102,22 @@ function PokemonDetail() {
                 </div>
             </div>
             <div className="center-bottom">
-                <h3 className="stats-title">Base Stats</h3>
                 <div className="stats-container">
-                    <p>HP: {pokemon.base.HP}</p>
-                    <p>Attack: {pokemon.base.Attack}</p>
-                    <p>Defense: {pokemon.base.Defense}</p>
-                    <p>Sp. Attack: {pokemon.base.SpAttack}</p>
-                    <p>Sp. Defense: {pokemon.base.SpDefense}</p>
-                    <p>Speed: {pokemon.base.Speed}</p>
+                    <div className="stats-left">
+                        <h3 className="stats-left-title">Base Stats:</h3>
+                        <p>HP: {pokemon.base.HP}</p>
+                        <p>Attack: {pokemon.base.Attack}</p>
+                        <p>Defense: {pokemon.base.Defense}</p>
+                        <p>Sp. Attack: {pokemon.base.SpAttack}</p>
+                        <p>Sp. Defense: {pokemon.base.SpDefense}</p>
+                        <p>Speed: {pokemon.base.Speed}</p>
+                    </div>
+                    <div className="stats-right">
+                        <h3 className="stats-right-title">Also Called:</h3>
+                        <p>Japanese: {pokemon.name.japanese}</p>
+                        <p>Chinese: {pokemon.name.chinese}</p>
+                        <p>French: {pokemon.name.french}</p>
+                    </div>
                 </div>
             </div>
             <div className="bottom-row">
