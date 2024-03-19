@@ -24,9 +24,10 @@ To run the server locally, follow these steps:
 
 To start the application, follow these steps:
 
-1. Naviagte to the table directory: `cd table`
-2. Install the required dependencies: `npm install`
-3. Start the application: `npm start`
+1. Open a new terminal and navigate to the cloned repository: `cd Ikarus-Pokedex`
+2. Naviagte to the table directory: `cd table`
+3. Install the required dependencies: `npm install`
+4. Start the application: `npm start`
 
 ## Usage
 
