@@ -36,7 +36,7 @@ function PokemonDetail() {
             });
 
             try {
-                const response = await axios.post('http://localhost:3000/graphql', query, {
+                const response = await axios.post('http://localhost:5000/graphql', query, {
                     headers: {
                         'Content-Type': 'application/json',
                     },

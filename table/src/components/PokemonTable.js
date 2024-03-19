@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { usePokemonData } from './Context';
 import './PokemonTable.css';
 
 // Define a component to display the sorting arrows
@@ -9,27 +9,14 @@ const SortArrows = () => (
 );
 
 const PokemonTable = () => {
-    //  // Defining states to manage the list of Pokemon, searching, sorting, and filtering
-    const [pokemons, setPokemons] = useState([]);
+    // Defining the states for getting the list of Pokemons, searching, sorting, and filtering
+    const { pokemons } = usePokemonData();
     const [search, setSearch] = useState(sessionStorage.getItem('search') || '');
     const [sortKey, setSortKey] = useState(sessionStorage.getItem('sortKey') || 'id');
     const [sortDirection, setSortDirection] = useState(sessionStorage.getItem('sortDirection') || 'asc');
     const [filter, setFilter] = useState(sessionStorage.getItem('filter') || '');
 
-    // Fetching data from the server
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const result = await axios.get('http://localhost:3000/api/pokemon');
-                setPokemons(result.data);
-            } catch (error) {
-                console.error("Error fetching data: ", error);
-            }
-        };
-        fetchData();
-    }, []);
-
-    // Save to sessionStorage whenever search, filter, or sort state changes
+    // Save the search, sortKey, sortDirection, and filter to sessionStorage
     useEffect(() => {
         sessionStorage.setItem('search', search);
         sessionStorage.setItem('sortKey', sortKey);
