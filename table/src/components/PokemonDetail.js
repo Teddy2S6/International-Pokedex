@@ -88,7 +88,7 @@ function PokemonDetail() {
             </div>
             <div className="center">
                 <div className="center-left">
-                    <img className="pokemon-image" src={`/assets/images/${String(pokemon.id).padStart(3, '0')}.png`} alt={pokemon.name.english} />
+                    <img className="pokemon-image" src={`https://img.pokemondb.net/artwork/${pokemon.name.english.toLowerCase()}.jpg`} alt={pokemon.name.english} />
                 </div>
                 <div className="center-right">
                     <p className="pokemon-number">No. {pokemon.id}</p>
