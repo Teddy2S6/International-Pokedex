@@ -290,3 +290,32 @@ table a:hover {
     outline: none;
     border-color: #007bff;
 }
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    margin-top: 20px;
+    font-weight: bold;
+}
+
+.page-link {
+    margin: 0 5px;
+    cursor: pointer;
+    text-decoration: none;
+    color: #007bff;
+    font-family: 'Fira Sans', sans-serif;
+}
+
+.page-link:hover {
+    text-decoration: underline;
+}
+
+.page-link.active {
+    text-decoration: underline;
+}
+
+.spacer {
+    height: 20px;
+}

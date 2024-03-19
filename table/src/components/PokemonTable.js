@@ -9,29 +9,34 @@ const SortArrows = () => (
 );
 
 const PokemonTable = () => {
-    // Defining the states for getting the list of Pokemons, searching, sorting, and filtering
+    // Defining the states for getting the list of Pokemons, searching, sorting, filtering, and pagination
     const { pokemons } = usePokemonData();
     const [search, setSearch] = useState(sessionStorage.getItem('search') || '');
     const [sortKey, setSortKey] = useState(sessionStorage.getItem('sortKey') || 'id');
     const [sortDirection, setSortDirection] = useState(sessionStorage.getItem('sortDirection') || 'asc');
     const [filter, setFilter] = useState(sessionStorage.getItem('filter') || '');
+    const [currentPage, setCurrentPage] = useState(parseInt(sessionStorage.getItem('currentPage') || '1', 10));
+    const itemsPerPage = 100;
 
-    // Save the search, sortKey, sortDirection, and filter to sessionStorage
+    // Save the search, sortKey, sortDirection, filter, and currentPage to sessionStorage
     useEffect(() => {
         sessionStorage.setItem('search', search);
         sessionStorage.setItem('sortKey', sortKey);
         sessionStorage.setItem('sortDirection', sortDirection);
         sessionStorage.setItem('filter', filter);
-    }, [search, sortKey, sortDirection, filter]);
+        sessionStorage.setItem('currentPage', currentPage.toString());
+    }, [search, sortKey, sortDirection, filter, currentPage]);
 
     // Event handlers for searching
     const handleSearchChange = (event) => {
         setSearch(event.target.value.toLowerCase());
+        setCurrentPage(1);
     };
 
     // Event handlers for filtering
     const handleFilterChange = (event) => {
         setFilter(event.target.value);
+        setCurrentPage(1);
     };
 
     // Event handlers for sorting
@@ -42,6 +47,7 @@ const PokemonTable = () => {
             setSortKey(key);
             setSortDirection('asc');
         }
+        setCurrentPage(1);
     };
 
     // Calculate total base stats
@@ -73,6 +79,27 @@ const PokemonTable = () => {
 
     // Function to determine if the column is the sorted column
     const isSorted = (key) => sortKey === key;
+
+    // Implement pagination
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentPokemons = sortedAndFilteredPokemons.slice(indexOfFirstItem, indexOfLastItem);
+
+    // Calculate the total number of pages based on the filtered list
+    const totalPages = Math.ceil(sortedAndFilteredPokemons.length / itemsPerPage);
+
+    // Create an array of page numbers
+    const pageNumbers = [];
+    for (let i = 1; i <= totalPages; i++) {
+        pageNumbers.push(i);
+    }
+
+    // Ensure the current page is not greater than the total number of pages
+    useEffect(() => {
+        if (currentPage > totalPages) {
+            setCurrentPage(totalPages);
+        }
+    }, [totalPages, currentPage]);
 
     return (
         <div className="table-container">
@@ -134,7 +161,7 @@ const PokemonTable = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {sortedAndFilteredPokemons.map((pokemon, index) => (
+                    {currentPokemons.map((pokemon, index) => (
                         <tr key={index}>
                             <td>
                                 <img src={`./assets/sprites/${String(pokemon.id).padStart(3, '0')}MS.png`} alt={pokemon.name.english} />
@@ -161,6 +188,20 @@ const PokemonTable = () => {
                     ))}
                 </tbody>
             </table>
+            <div className="pagination">
+                {currentPage > 1 && (
+                    <a href="#!" className='page-link' onClick={() => setCurrentPage(currentPage - 1)}>&laquo;</a>
+                )}
+                {pageNumbers.map(number => (
+                    <a key={number} href="#!" className={`page-link ${currentPage === number ? 'active' : ''}`} onClick={() => setCurrentPage(number)}>
+                        {number}
+                    </a>
+                ))}
+                {currentPage < totalPages && (
+                    <a href="#!" className='page-link' onClick={() => setCurrentPage(currentPage + 1)}>&raquo;</a>
+                )}
+            </div>
+            <div className="spacer"></div>
         </div>
     );
 };
