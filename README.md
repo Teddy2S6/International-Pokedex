@@ -1,16 +1,16 @@
 # Ikarus-Pokedex
 
-This project is a Pokedex application that allows users to search for and view information about different Pokemon. It provides details such as the Pokemon's name, type, abilities, and stats. The application also includes a search functionality to easily find specific Pokemon by name or type.
+This project is a Pokedex application that allows users to search for and view information about different Pokemon. It provides details such as the Pokemon's name, type, and stats. The application also includes a search functionality to easily find specific Pokemon by name or type.
 
 ## Features
 
-- Search for Pokemon by name or ID
-- View detailed information about each Pokemon, including its type, abilities, and stats
+- Search for Pokemon by name or type
+- View detailed information about each Pokemon, including its type and stats
 - User-friendly interface for easy navigation and interaction
 
 ## Installation
 
-1. Clone the repository: `git clone https://github.com/your-username/Ikarus-Pokedex.git`
+1. Clone the repository: `git clone https://github.com/TeddyS26/Ikarus-Pokedex.git`
 2. Naviagte to the cloned repository: `cd Ikarus-Pokedex`
 
 ### Server
