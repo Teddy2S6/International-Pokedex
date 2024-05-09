@@ -1,4 +1,4 @@
-# Ikarus-Pokedex
+# International-Pokedex
 
 This project is a Pokedex application that allows users to search for and view information about different Pokemon. It provides details such as the Pokemon's name, type, and stats. The application also includes a search functionality to easily find specific Pokemon by name or type.
 
@@ -10,8 +10,8 @@ This project is a Pokedex application that allows users to search for and view i
 
 ## Installation
 
-1. Clone the repository: `git clone https://github.com/TeddyS26/Ikarus-Pokedex.git`
-2. Naviagte to the cloned repository: `cd Ikarus-Pokedex`
+1. Clone the repository: `git clone https://github.com/TeddyS26/International-Pokedex.git`
+2. Naviagte to the cloned repository: `cd International-Pokedex`
 
 ### Server
 
@@ -24,7 +24,7 @@ To run the server locally, follow these steps:
 
 To start the application, follow these steps:
 
-1. Open a new terminal and navigate to the cloned repository: `cd Ikarus-Pokedex`
+1. Open a new terminal and navigate to the cloned repository: `cd International-Pokedex`
 2. Naviagte to the table directory: `cd table`
 3. Install the required dependencies: `npm install`
 4. Start the application: `npm start`
