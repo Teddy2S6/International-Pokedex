@@ -5,7 +5,7 @@
 /table/.pnp
 /table/.pnp.js
 
-# Ignore node_modules at the root of Ikarus-Pokedex
+# Ignore node_modules at the root of International-Pokedex
 /node_modules
 
 # testing
