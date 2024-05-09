@@ -10,7 +10,7 @@ This project is a Pokedex application that allows users to search for and view i
 
 ## Installation
 
-1. Clone the repository: `git clone https://github.com/TeddyS26/International-Pokedex.git`
+1. Clone the repository: `git clone https://github.com/Teddy2S6/International-Pokedex.git`
 2. Naviagte to the cloned repository: `cd International-Pokedex`
 
 ### Server
